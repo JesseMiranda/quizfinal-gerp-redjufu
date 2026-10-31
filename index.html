@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz: Gestión Emocional y Resolución de Conflictos - REDJUFU</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Font - Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              purple: '#5B21B6',
+              indigo: '#4F46E5',
+              coral: '#F43F5E',
+              teal: '#0D9488',
+              yellow: '#F59E0B',
+              dark: '#0F172A'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Estilos personalizados y animaciones */
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+      min-height: 100vh;
+    }
+    
+    .glass-card {
+      background: rgba(30, 41, 59, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    
+    .btn-option {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-option:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .correct-anim {
+      animation: pulseGreen 0.6s ease-out;
+    }
+
+    .wrong-anim {
+      animation: shakeRed 0.5s ease-in-out;
+    }
+
+    @keyframes pulseGreen {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shakeRed {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+  </style>
+</head>
+<body class="font-sans text-slate-100 flex flex-col justify-between p-3 sm:p-6 min-h-screen">
+
+  <!-- ENCABEZADO GLOBAL / LOGO DE REDJUFU -->
+  <header class="w-full max-w-4xl mx-auto flex items-center justify-between pb-4 border-b border-slate-700/60 mb-4">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-purple to-brand-coral flex items-center justify-center shadow-lg shadow-purple-500/30">
+        <i class="fa-solid fa-fire text-yellow-300 text-xl"></i>
+      </div>
+      <div>
+        <h1 class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-rose-300 to-indigo-300">
+          ESCUELA DE LÍDERES
+        </h1>
+        <p class="text-xs text-slate-400 font-medium tracking-wide">REDJUFU • FUSALMO</p>
+      </div>
+    </div>
+    <div class="hidden sm:flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-full border border-slate-700 text-xs font-semibold text-slate-300">
+      <i class="fa-solid fa-laptop-code text-indigo-400"></i>
+      <span>QUIZ FINAL</span>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL DINÁMICO -->
+  <main class="w-full max-w-3xl mx-auto my-auto">
+    
+    <!-- PANTALLA 1: BIENVENIDA E INICIO -->
+    <section id="start-screen" class="glass-card rounded-3xl p-6 sm:p-10 shadow-2xl text-center space-y-6">
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-indigo-600/30 border border-indigo-400/40 text-indigo-300 mb-2 shadow-inner">
+        <i class="fa-solid fa-brain text-4xl"></i>
+      </div>
+      
+      <div class="space-y-2">
+        <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-300 text-xs font-bold uppercase tracking-wider rounded-full border border-purple-500/30">
+          quiz • final
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Gestión Emocional & Resolución de Conflictos
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto">
+          Pon a prueba tus conocimientos sobre inteligencia emocional, autocontrol y las estrategias clave para solucionar diferencias en tu equipo de líderes.
+        </p>
+      </div>
+
+      <!-- FORMULARIO JUGADOR / NOMBRE -->
+      <div class="max-w-md mx-auto space-y-4 pt-2">
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+            <i class="fa-solid fa-user-astronaut"></i>
+          </span>
+          <input type="text" id="player-name" placeholder="Escribe tu nombre" 
+            class="w-full pl-11 pr-4 py-3.5 bg-slate-900/90 border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+        </div>
+
+        <button id="btn-start" onclick="quizApp.startQuiz()" 
+          class="w-full py-4 px-8 bg-gradient-to-r from-brand-indigo via-purple-600 to-brand-coral hover:from-indigo-500 hover:to-rose-500 text-white font-bold rounded-2xl shadow-xl shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 text-lg">
+          <span>¡Iniciar el Desafío!</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 sm:gap-4 pt-4 border-t border-slate-700/50 text-xs text-slate-400">
+        <div class="flex flex-col items-center">
+          <i class="fa-solid fa-list-check text-indigo-400 text-base mb-1"></i>
+          <span>8 Preguntas</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <i class="fa-solid fa-bolt text-yellow-400 text-base mb-1"></i>
+          <span>Feedback Inmediato</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <i class="fa-solid fa-trophy text-rose-400 text-base mb-1"></i>
+          <span>Insignia Final</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANTALLA 2: JUEGO / PREGUNTAS -->
+    <section id="quiz-screen" class="hidden glass-card rounded-3xl p-5 sm:p-8 shadow-2xl space-y-6">
+      <!-- BARRA SUPERIOR DE ESTADO Y PROGRESO -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between text-xs sm:text-sm font-semibold">
+          <div class="flex items-center gap-2 text-indigo-300">
+            <span class="w-7 h-7 rounded-lg bg-indigo-900/70 border border-indigo-500/40 flex items-center justify-center font-bold" id="current-q-num">1</span>
+            <span class="text-slate-400">de <span id="total-q-num">8</span> Preguntas</span>
+          </div>
+          <div class="flex items-center gap-2 bg-slate-800/90 px-3 py-1.5 rounded-full border border-slate-700">
+            <i class="fa-solid fa-star text-amber-400"></i>
+            <span class="text-slate-300">Puntos: <strong id="live-score" class="text-white font-bold">0</strong></span>
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="w-full bg-slate-900/80 h-3 rounded-full overflow-hidden p-0.5 border border-slate-700/50">
+          <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-rose-500 h-full rounded-full transition-all duration-500" style="width: 12%;"></div>
+        </div>
+      </div>
+
+      <!-- ENUNCIADO DE LA PREGUNTA -->
+      <div class="space-y-2 py-2">
+        <span id="question-category" class="inline-block px-2.5 py-1 bg-indigo-500/10 text-indigo-300 text-xs font-semibold rounded-lg border border-indigo-500/20">
+          Categoría
+        </span>
+        <h3 id="question-text" class="text-lg sm:text-2xl font-bold text-white leading-snug">
+          Cargando pregunta...
+        </h3>
+      </div>
+
+      <!-- OPCIONES DE RESPUESTA -->
+      <div id="options-container" class="grid grid-cols-1 gap-3">
+        <!-- Generado dinámicamente -->
+      </div>
+
+      <!-- CAJA DE RETROALIMENTACIÓN / EXPLICACIÓN -->
+      <div id="feedback-box" class="hidden rounded-2xl p-4 border transition-all duration-300">
+        <div class="flex items-start gap-3">
+          <div id="feedback-icon" class="text-2xl mt-0.5"></div>
+          <div class="space-y-1">
+            <h4 id="feedback-title" class="font-bold text-sm sm:text-base"></h4>
+            <p id="feedback-text" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTÓN SIGUIENTE -->
+      <div class="flex justify-end pt-2">
+        <button id="btn-next" onclick="quizApp.nextQuestion()" disabled
+          class="py-3 px-6 bg-slate-700 text-slate-400 font-bold rounded-xl transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+          <span>Siguiente</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- PANTALLA 3: RESULTADOS FINALES -->
+    <section id="results-screen" class="hidden glass-card rounded-3xl p-6 sm:p-10 shadow-2xl text-center space-y-6">
+      <div class="relative inline-block">
+        <div id="badge-icon-bg" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-amber-500 to-rose-500 p-1 mx-auto shadow-xl shadow-amber-500/20">
+          <div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center border-4 border-slate-900">
+            <i id="badge-icon" class="fa-solid fa-award text-4xl sm:text-5xl text-amber-400"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
+          ¡Felicidades, <span id="res-player-name" class="text-indigo-300">Líder</span>!
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base">
+          Has completado el Quiz de Gestión Emocional y Resolución de Conflictos.
+        </p>
+      </div>
+
+      <!-- TARJETA DE PUNTAJE E INSIGNIA -->
+      <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-5 max-w-md mx-auto space-y-4 shadow-inner">
+        <div class="grid grid-cols-2 divide-x divide-slate-700">
+          <div class="px-2">
+            <span class="block text-xs text-slate-400 font-medium uppercase">Puntaje Final</span>
+            <span id="final-score" class="text-3xl sm:text-4xl font-extrabold text-indigo-400">0/8</span>
+          </div>
+          <div class="px-2">
+            <span class="block text-xs text-slate-400 font-medium uppercase">Efectividad</span>
+            <span id="final-percentage" class="text-3xl sm:text-4xl font-extrabold text-emerald-400">0%</span>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-800">
+          <span class="text-xs text-slate-400 uppercase font-semibold block mb-1">Tu Insignia Obtenida:</span>
+          <div id="badge-title" class="text-lg font-bold text-amber-300">
+            Cargando insignia...
+          </div>
+          <p id="badge-desc" class="text-xs text-slate-300 mt-1">
+            Descripción de insignia
+          </p>
+        </div>
+      </div>
+
+      <!-- BOTONES DE ACCIÓN -->
+      <div class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto pt-2">
+        <button onclick="quizApp.restartQuiz()" 
+          class="w-full py-3.5 px-6 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-rotate-right"></i>
+          <span>Intentar de Nuevo</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="w-full max-w-4xl mx-auto text-center pt-4 border-t border-slate-800/80 text-xs text-slate-500 mt-4">
+    <p>© REDJUFU • Red de Juventudes FUSALMO • Programa de Formación de Líderes</p>
+  </footer>
+
+  <!-- LÓGICA JAVASCRIPT -->
+  <script>
+    // Banco de Preguntas basado fielmente en la presentación
+    const quizQuestions = [
+      {
+        category: "Gestión Emocional",
+        question: "¿Qué es la Gestión Emocional según el módulo de liderazgo?",
+        options: [
+          "Eliminar y reprimir las emociones negativas para evitar conflictos en el equipo.",
+          "Capacidad de identificar, comprender, regular y expresar emociones reconociendo que traen información valiosa.",
+          "Reaccionar de inmediato según lo que sentimos para ser completamente honestos.",
+          "Ignorar lo que sentimos y enfocarnos únicamente en los resultados de trabajo."
+        ],
+        correct: 1,
+        explanation: "La gestión emocional no busca eliminar emociones, sino comprender que son información valiosa sobre nuestras necesidades, valores y límites para expresarlas adecuadamente."
+      },
+      {
+        category: "Inteligencia Emocional",
+        question: "¿Cuáles son los 5 componentes clave de la Inteligencia Emocional?",
+        options: [
+          "Autoconciencia, Autorregulación, Motivación, Empatía y Habilidades sociales.",
+          "Liderazgo, Inteligencia mental, Paciencia, Simpatía y Asertividad.",
+          "Escucha activa, Zona de confort, Carisma, Control y Disciplina.",
+          "Autoestima, Comunicación, Negociación, Tolerancia y Optimismo."
+        ],
+        correct: 0,
+        explanation: "Los 5 pilares fundamentales presentados son: Autoconciencia, Autorregulación (autocontrol), Motivación, Empatía y Habilidades Sociales."
+      },
+      {
+        category: "Técnicas de Autorregulación",
+        question: "En la Técnica STOP de regulación emocional, ¿qué significan sus siglas en orden?",
+        options: [
+          "Solucionar, Tomar partido, Opinar, Presionar.",
+          "Stop (Detente), Toma aire, Observa (qué siento/pienso), Procede con conciencia.",
+          "Silenciar, Transmitir, Organizar, Paralizar.",
+          "Sentir, Tolerar, Orientar, Proyectar."
+        ],
+        correct: 1,
+        explanation: "La técnica STOP nos brinda una pausa estratégica: S = Stop/Detente, T = Toma aire/Respira, O = Observa pensamientos y emociones, P = Procede con conciencia."
+      },
+      {
+        category: "Manejo de Emociones",
+        question: "¿Cuál es la diferencia fundamental entre Reprimir y Gestionar una emoción?",
+        options: [
+          "Reprimir es de líderes fuertes; gestionar es de líderes débiles.",
+          "Gestionar es ocultar lo que sentimos y reprimir es gritarlo con fuerza.",
+          "Reprimir acumula tensión provocando estallidos; gestionar es reconocer, aceptar y expresar respetuosamente.",
+          "No existe diferencia, ambas significan controlar las emociones en público."
+        ],
+        correct: 2,
+        explanation: "Reprimir es esconder o negar la emoción (lo que acumula tensión e hiere relaciones). Gestionarla es aceptarla y expresarla respetuosamente."
+      },
+      {
+        category: "Resolución de Conflictos",
+        question: "¿Cómo se define un Conflicto en las relaciones interpersonales?",
+        options: [
+          "Una pelea destructiva e inevitable donde siempre debe haber un ganador y un perdedor.",
+          "Una situación donde dos o más partes perciben que sus intereses, valores o necesidades son incompatibles.",
+          "Un error grave cometido únicamente por personas agresivas.",
+          "Una falta total de respeto que no puede solucionarse de forma pacífica."
+        ],
+        correct: 1,
+        explanation: "El conflicto es un fenómeno natural en toda relación donde se percibe incompatibilidad de necesidades o valores. Su impacto (constructivo o destructivo) depende de cómo se maneje."
+      },
+      {
+        category: "Tipos de Conflicto",
+        question: "Un líder que se siente indeciso o con un dilema de valores en su mundo interior enfrenta un conflicto:",
+        options: [
+          "Interpersonal",
+          "Organizacional",
+          "Grupal",
+          "Intrapersonal"
+        ],
+        correct: 3,
+        explanation: "El conflicto INTRAPERSONAL ocurre dentro de uno mismo (dudas internas, dilemas). El interpersonal es entre dos o más personas."
+      },
+      {
+        category: "Pasos de Resolución",
+        question: "¿Cuál es el orden adecuado de los pasos para resolver un conflicto eficazmente?",
+        options: [
+          "Imponer solución -> Discutir el problema -> Calmar emociones -> Celebrar.",
+          "Calmar emociones -> Definir problema con hechos -> Escuchar necesidades -> Generar opciones -> Acordar compromisos.",
+          "Acumular reproches -> Buscar culpables -> Exigir disculpas -> Asignar castigos.",
+          "Ignorar la diferencia -> Esperar que pase el tiempo -> Hablar con la directiva."
+        ],
+        correct: 1,
+        explanation: "El proceso constructivo requiere: 1. Calmar emociones, 2. Definir hechos concretos, 3. Escuchar necesidades reales, 4. Generar opciones juntos y 5. Acordar compromisos de medición."
+      },
+      {
+        category: "Estilos de Comunicación",
+        question: "¿Qué caracteriza al estilo de comunicación ASERTIVO durante un conflicto?",
+        options: [
+          "Impone su postura, eleva la voz y descalifica las ideas de los demás.",
+          "Calla sus propias necesidades por miedo al rechazo, guardando resentimiento.",
+          "Expresa de forma clara y honesta lo que piensa y siente, manteniendo siempre el respeto por el otro.",
+          "Evita el tema y delega la responsabilidad a otra persona."
+        ],
+        correct: 2,
+        explanation: "El estilo asertivo logra el equilibrio: expresa necesidades y pensamientos con firmeza pero respetando la dignidad del otro, promoviendo confianza y acuerdos."
+      }
+    ];
+
+    // Objeto Gestor del Quiz
+    class QuizApp {
+      constructor() {
+        this.questions = quizQuestions;
+        this.currentIndex = 0;
+        this.score = 0;
+        this.playerName = "Líder REDJUFU";
+        this.answered = false;
+
+        // Elementos DOM
+        this.startScreen = document.getElementById('start-screen');
+        this.quizScreen = document.getElementById('quiz-screen');
+        this.resultsScreen = document.getElementById('results-screen');
+        
+        this.inputName = document.getElementById('player-name');
+        this.qNumSpan = document.getElementById('current-q-num');
+        this.totalNumSpan = document.getElementById('total-q-num');
+        this.liveScoreSpan = document.getElementById('live-score');
+        this.progressBar = document.getElementById('progress-bar');
+        
+        this.categorySpan = document.getElementById('question-category');
+        this.qText = document.getElementById('question-text');
+        this.optionsBox = document.getElementById('options-container');
+        
+        this.feedbackBox = document.getElementById('feedback-box');
+        this.feedbackIcon = document.getElementById('feedback-icon');
+        this.feedbackTitle = document.getElementById('feedback-title');
+        this.feedbackText = document.getElementById('feedback-text');
+        this.btnNext = document.getElementById('btn-next');
+      }
+
+      startQuiz() {
+        const nameVal = this.inputName.value.trim();
+        if (nameVal !== "") {
+          this.playerName = nameVal;
+        }
+        
+        this.currentIndex = 0;
+        this.score = 0;
+        this.totalNumSpan.textContent = this.questions.length;
+
+        this.startScreen.classList.add('hidden');
+        this.resultsScreen.classList.add('hidden');
+        this.quizScreen.classList.remove('hidden');
+
+        this.loadQuestion();
+      }
+
+      loadQuestion() {
+        this.answered = false;
+        const currentQ = this.questions[this.currentIndex];
+
+        // Actualizar UI de estado
+        this.qNumSpan.textContent = this.currentIndex + 1;
+        this.liveScoreSpan.textContent = this.score;
+        const progressPercent = ((this.currentIndex + 1) / this.questions.length) * 100;
+        this.progressBar.style.width = `${progressPercent}%`;
+
+        // Ocultar feedback y deshabilitar botón Siguiente
+        this.feedbackBox.classList.add('hidden');
+        this.btnNext.disabled = true;
+        this.btnNext.className = "py-3 px-6 bg-slate-700 text-slate-400 font-bold rounded-xl transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed";
+
+        // Cargar texto
+        this.categorySpan.textContent = currentQ.category;
+        this.qText.textContent = currentQ.question;
+
+        // Renderizar opciones
+        this.optionsBox.innerHTML = '';
+        currentQ.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = "btn-option w-full p-4 rounded-2xl bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 text-left text-sm sm:text-base font-medium text-slate-100 flex items-start gap-3";
+          btn.onclick = () => this.selectOption(idx);
+          
+          btn.innerHTML = `
+            <span class="w-6 h-6 rounded-lg bg-slate-700 text-slate-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 border border-slate-600">
+              ${String.fromCharCode(65 + idx)}
+            </span>
+            <span class="leading-snug">${optText}</span>
+          `;
+          this.optionsBox.appendChild(btn);
+        });
+      }
+
+      selectOption(optionIndex) {
+        if (this.answered) return;
+        this.answered = true;
+
+        const currentQ = this.questions[this.currentIndex];
+        const buttons = this.optionsBox.querySelectorAll('button');
+        const isCorrect = optionIndex === currentQ.correct;
+
+        // Deshabilitar todas las opciones
+        buttons.forEach((btn, idx) => {
+          btn.disabled = true;
+          if (idx === currentQ.correct) {
+            btn.classList.remove('bg-slate-800/90', 'border-slate-700');
+            btn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-200');
+            btn.querySelector('span').classList.add('bg-emerald-500', 'text-slate-950');
+          } else if (idx === optionIndex && !isCorrect) {
+            btn.classList.remove('bg-slate-800/90', 'border-slate-700');
+            btn.classList.add('bg-rose-950/80', 'border-rose-500', 'text-rose-200', 'wrong-anim');
+            btn.querySelector('span').classList.add('bg-rose-500', 'text-white');
+          }
+        });
+
+        if (isCorrect) {
+          this.score += 10;
+          this.liveScoreSpan.textContent = this.score;
+          buttons[optionIndex].classList.add('correct-anim');
+          
+          this.showFeedback(
+            true, 
+            "¡Correcto! Excelente análisis", 
+            currentQ.explanation
+          );
+        } else {
+          this.showFeedback(
+            false, 
+            "Respuesta Incorrecta", 
+            currentQ.explanation
+          );
+        }
+
+        // Habilitar botón siguiente
+        this.btnNext.disabled = false;
+        this.btnNext.className = "py-3 px-6 bg-gradient-to-r from-brand-indigo to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 transform active:scale-95 cursor-pointer";
+      }
+
+      showFeedback(isCorrect, title, text) {
+        this.feedbackBox.classList.remove('hidden', 'bg-emerald-950/70', 'border-emerald-500/50', 'text-emerald-300', 'bg-rose-950/70', 'border-rose-500/50', 'text-rose-300');
+        
+        if (isCorrect) {
+          this.feedbackBox.classList.add('bg-emerald-950/70', 'border-emerald-500/50');
+          this.feedbackIcon.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i>`;
+          this.feedbackTitle.className = "font-bold text-sm sm:text-base text-emerald-300";
+        } else {
+          this.feedbackBox.classList.add('bg-rose-950/70', 'border-rose-500/50');
+          this.feedbackIcon.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-400"></i>`;
+          this.feedbackTitle.className = "font-bold text-sm sm:text-base text-rose-300";
+        }
+
+        this.feedbackTitle.textContent = title;
+        this.feedbackText.textContent = text;
+      }
+
+      nextQuestion() {
+        this.currentIndex++;
+        if (this.currentIndex < this.questions.length) {
+          this.loadQuestion();
+        } else {
+          this.showResults();
+        }
+      }
+
+      showResults() {
+        this.quizScreen.classList.add('hidden');
+        this.resultsScreen.classList.remove('hidden');
+
+        document.getElementById('res-player-name').textContent = this.playerName;
+        
+        const correctCount = this.score / 10;
+        const total = this.questions.length;
+        const percentage = Math.round((correctCount / total) * 100);
+
+        document.getElementById('final-score').textContent = `${correctCount}/${total}`;
+        document.getElementById('final-percentage').textContent = `${percentage}%`;
+
+        // Determinar insignia según puntaje
+        const badgeTitle = document.getElementById('badge-title');
+        const badgeDesc = document.getElementById('badge-desc');
+        const badgeIcon = document.getElementById('badge-icon');
+        const badgeBg = document.getElementById('badge-icon-bg');
+
+        if (percentage >= 85) {
+          badgeTitle.textContent = "🏆 Maestro de la Paz y Asertividad";
+          badgeDesc.textContent = "Dominas con maestría tus emociones y sabes resolver conflictos guiando al equipo con empatía y diálogo.";
+          badgeIcon.className = "fa-solid fa-crown text-4xl sm:text-5xl text-amber-300";
+          badgeBg.className = "w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-200 p-1 mx-auto shadow-xl shadow-amber-500/30";
+        } else if (percentage >= 60) {
+          badgeTitle.textContent = "⭐ Líder Constructivo";
+          badgeDesc.textContent = "Tienes bases sólidas de inteligencia emocional y comunicación asertiva. ¡Sigue practicando la técnica STOP!";
+          badgeIcon.className = "fa-solid fa-shield-halved text-4xl sm:text-5xl text-indigo-300";
+          badgeBg.className = "w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-400 p-1 mx-auto shadow-xl shadow-indigo-500/30";
+        } else {
+          badgeTitle.textContent = "🌱 Líder en Formación";
+          badgeDesc.textContent = "Estás dando tus primeros pasos. Repasa la reevaluación cognitiva y los pasos para solucionar conflictos.";
+          badgeIcon.className = "fa-solid fa-seedling text-4xl sm:text-5xl text-emerald-300";
+          badgeBg.className = "w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 p-1 mx-auto shadow-xl shadow-emerald-500/30";
+        }
+      }
+
+      restartQuiz() {
+        this.resultsScreen.classList.add('hidden');
+        this.startScreen.classList.remove('hidden');
+      }
+    }
+
+    // Inicializar aplicación
+    let quizApp;
+    window.onload = () => {
+      quizApp = new QuizApp();
+    };
+  </script>
+</body>
+</html>
